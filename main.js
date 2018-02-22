@@ -28,7 +28,6 @@ $(document).on("click", ".ticTacToeCell", function(){
 	}
 })
 
-
 function findNumberInArrayX(currentValue) {
   return game.usedCellsX.includes(currentValue)
 }
@@ -86,7 +85,6 @@ function computersTurn(){
 					}
 				}
 			}
-			console.log(options);
 			pickedCell = options.splice(pickRandomNumber(options.length), 1)[0];
 		}
 	}
@@ -106,12 +104,35 @@ function computersTurn(){
 			}
 		}
 		if(!pickedCell){
-			pickedCell = game.openCells[pickRandomNumber(game.openCells.length)];
-			console.log("picked random cell = " + pickedCell);
+			var options = [];
+			for (var k = 0; k < game.usedCellsX.length; k++){
+				for (var h = 0; h < game.usedCellsO.length ; h++){
+					for (var i=0; i < 8; i++){
+						if(checkAvailability(winOptions[i], game.usedCellsX[k]) && !checkAvailability(winOptions[i], game.usedCellsO[h])){
+							for(var j=0; j < 3; j++){
+								if(winOptions[i][j] !== game.usedCellsX[k]){
+									if(checkAvailability(game.openCells , winOptions[i][j])){
+										options.push(winOptions[i][j]);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			options.sort()
+			for(var l = 0; l< options.length; l++){
+				if (options[l] === options[l + 1]){
+					pickedCell = options[l];
+				}
+			}
 		}
+		// if(!pickedCell){
+		// 	pickedCell = game.openCells[pickRandomNumber(game.openCells.length)];
+		// 	console.log("picked random cell = " + pickedCell);
+		// }
 	}
 	if(game.usedCellsO.length >= 2){
-		console.log("checking for winning O");
 		var pairs = findPairs(game.usedCellsO);
 		for(var j=0; j< pairs.length; j++){
 			for (var i=0; i < 8; i++){
@@ -120,7 +141,6 @@ function computersTurn(){
 						if(winOptions[i][k] !== pairs[j][0] && winOptions[i][k] !== pairs[j][1]){
 							if(checkAvailability(game.openCells, winOptions[i][k])){
 								pickedCell = winOptions[i][k];
-								console.log("changed picked cell = " + pickedCell);
 							}
 						}
 					}
@@ -128,7 +148,6 @@ function computersTurn(){
 			}
 		}
 	}
-	console.log(pickedCell);
 	game.openCells.splice(game.openCells.indexOf(pickedCell), 1);
 	$("#" + pickedCell).html('<img src="o.svg" alt="o"></div>');
 	game.usedCells.push(pickedCell);
