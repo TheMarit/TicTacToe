@@ -33,3 +33,26 @@ h1{
 img{
 	transform: scale(1.6);
 }
+button{
+    padding: 0 40px;
+    margin: 10px;
+    height: auto;
+    background: #1c5258;
+    border-radius: 10px;
+    box-shadow: 0 3px #133b40;
+    border: none;
+    text-align: center;
+    font-size: 22px;
+	font-family: 'Rancho', cursive;
+    font-weight: bold;
+    color: #9ed5d3;
+    cursor: pointer;
+    position: relative;
+    width: 320px;
+    height: 40px;
+}
+
+button:active{
+  box-shadow: none;
+  top: 3px;
+}

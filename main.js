@@ -5,21 +5,30 @@ var game = {
 	usedCells: [],
 	usedCellsX: [],
 	usedCellsO: [],
-	openCells: ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+	openCells: ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+	ongoing: true
 }
 var winOptions = [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"], ["1", "4", "7"], ["2", "5", "8"], ["3", "6", "9"], ["1", "5", "9"], ["3", "5", "7"]];
 
+$(document).on("click", ".playagain", function(){
+	game.usedCells = [];
+	game.usedCellsX = [];
+	game.usedCellsO = [];
+	game.openCells = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+	$(".ticTacToeCell").html("");
+	game.ongoing = true;
+});
 
 $(document).on("click", ".ticTacToeCell", function(){
 	//If the clicked cell is not used, add X to cell, put in used Cells array, remove from openCells.
-	if(game.usedCells.indexOf($(this).attr('id')) == -1){
+	if(game.usedCells.indexOf($(this).attr('id')) == -1 && game.ongoing){
 		$(this).html('<img src="x.svg" alt="x"></div>');
 		game.usedCells.push($(this).attr('id'));
 		game.usedCellsX.push($(this).attr('id'));
 		game.openCells.splice(game.openCells.indexOf($(this).attr('id')), 1);
 		if(game.usedCellsX.length >= 3){
 			if(checkForWinX()){
-				setTimeout(function(){alert("You Win!");}, 10)
+				setTimeout(function(){alert("You Win!");game.ongoing = false;}, 10)
 				return;
 			}
 		}
@@ -185,7 +194,7 @@ function computersTurn(){
 	game.usedCellsO.push(pickedCell);
 	if(game.usedCellsO.length >= 3){
 		if(checkForWinO()){
-			setTimeout(function(){alert("You Lose!");}, 10)
+			setTimeout(function(){alert("You Lose!");game.ongoing = false;}, 510)
 			return;
 		}
 	}
