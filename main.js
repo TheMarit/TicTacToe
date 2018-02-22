@@ -20,7 +20,6 @@ $(document).on("click", ".ticTacToeCell", function(){
 		if(game.usedCellsX.length >= 3){
 			if(checkForWinX()){
 				setTimeout(function(){alert("You Win!");}, 10)
-				
 				return;
 			}
 		}
@@ -105,6 +104,32 @@ function computersTurn(){
 		}
 		if(!pickedCell){
 			var options = [];
+			var options2 = [];
+			if(game.usedCellsO.length === 1){
+				var moveO = game.usedCellsO[0];
+					for(var i=0; i< 6; i++){
+						if(checkAvailability(winOptions[i], moveO)){
+							options.push(winOptions[i]);		
+						}
+					}
+				for(var i=0; i< options.length; i++){
+					for(var j=0; j< game.usedCellsX.length; j++){
+						if(checkAvailability(options[i], game.usedCellsX[j])){
+							options.splice(i,1);
+						}
+					}
+				}
+				for(var i=0; i<options.length; i++){
+					for(var j=0; j<options[i].length; j++){
+						if(options[i][j] !== moveO){
+							options2.push(options[i][j])
+						}
+					}
+				}
+				pickedCell = options2[pickRandomNumber(options2.length)];
+			}
+			if(!pickedCell){
+			var options = [];
 			for (var k = 0; k < game.usedCellsX.length; k++){
 				for (var h = 0; h < game.usedCellsO.length ; h++){
 					for (var i=0; i < 8; i++){
@@ -127,6 +152,10 @@ function computersTurn(){
 				}
 			}
 		}
+
+
+		}
+
 		// if(!pickedCell){
 		// 	pickedCell = game.openCells[pickRandomNumber(game.openCells.length)];
 		// 	console.log("picked random cell = " + pickedCell);
@@ -149,7 +178,9 @@ function computersTurn(){
 		}
 	}
 	game.openCells.splice(game.openCells.indexOf(pickedCell), 1);
-	$("#" + pickedCell).html('<img src="o.svg" alt="o"></div>');
+	setTimeout(function(){
+		$("#" + pickedCell).html('<img src="o.svg" alt="o"></div>');
+	}, 500)
 	game.usedCells.push(pickedCell);
 	game.usedCellsO.push(pickedCell);
 	if(game.usedCellsO.length >= 3){
