@@ -384,8 +384,9 @@ $('.toggle').click(function(e) {
 
 
 $('.placeholder').on('click', function (ev) {
-  $('.placeholder').css('opacity', '0');
+  // $('.placeholder').css('opacity', '0');
   $('.list__ul').toggle();
+  $(".controls").css("border-radius", "10px 10px 0 10px");
 });
 
 $('.list__ul a').on('click', function (ev) {
@@ -393,8 +394,8 @@ $('.list__ul a').on('click', function (ev) {
    var index = $(this).parent().index();
    $('.placeholder').text( $(this).text() ).css('opacity', '1');
    game.difficulty = $(this).text()
-   $('.list__ul').find('li').eq(index).prependTo('.list__ul');
    $('.list__ul').toggle();   
    $( ".playagain" ).trigger( "click" );
+   $(".controls").css("border-radius", "10px");
 });
 
