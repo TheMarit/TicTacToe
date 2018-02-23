@@ -24,41 +24,42 @@ $(document).on("click", ".playagain", function(){
 
 $(document).on("click", ".ticTacToeCell", function(){
 	//If the clicked cell is not used, add X to cell, put in used Cells array, remove from openCells.
-	if(game.usedCells.indexOf($(this).attr('id')) == -1 && game.ongoing){
-		if(game.player === "x"){
-			$(this).find(".x").css("opacity","1");
-		} else{
-			$(this).find(".o").css("opacity","1");
-		}
-		game.usedCells.push($(this).attr('id'));
-		game.usedCellsX.push($(this).attr('id'));
-		game.openCells.splice(game.openCells.indexOf($(this).attr('id')), 1);
-		if(game.usedCellsX.length >= 3){
-			if(checkForWinX()){
-				setTimeout(function(){
-				$("h2").text("You Win!");
-				$("#messageWrapper").css("display", "block");
-				game.ongoing = false;
-				setTimeout(function(){
-					$(".container").css("opacity", "0.5");
-					setTimeout(function(){
-						$("#messageWrapper").css("opacity", "1");
-					}, 500);
-				}, 500);
-			}, 100);
-				return;
+	if(game.usedCellsX.length === game.usedCellsO.length){
+		if(game.usedCells.indexOf($(this).attr('id')) == -1 && game.ongoing){
+			if(game.player === "x"){
+				$(this).find(".x").css("opacity","1");
+			} else{
+				$(this).find(".o").css("opacity","1");
 			}
+			game.usedCells.push($(this).attr('id'));
+			game.usedCellsX.push($(this).attr('id'));
+			game.openCells.splice(game.openCells.indexOf($(this).attr('id')), 1);
+			if(game.usedCellsX.length >= 3){
+				if(checkForWinX()){
+					setTimeout(function(){
+					$("h2").text("You Win!");
+					$("#messageWrapper").css("display", "block");
+					game.ongoing = false;
+					setTimeout(function(){
+						$(".container").css("opacity", "0.5");
+						setTimeout(function(){
+							$("#messageWrapper").css("opacity", "1");
+						}, 500);
+					}, 500);
+				}, 100);
+					return;
+				}
+			}
+			if(game.difficulty === "Impossible"){
+				game.level[0]();
+			}
+			if(game.difficulty === "Hard"){
+				game.level[1]();
+			}
+			if(game.difficulty === "Easy"){
+				game.level[2]();
+			}		
 		}
-		if(game.difficulty === "Impossible"){
-			game.level[0]();
-		}
-		if(game.difficulty === "Hard"){
-			game.level[1]();
-		}
-		if(game.difficulty === "Easy"){
-			game.level[2]();
-		}
-		
 	}
 })
 
@@ -89,25 +90,28 @@ function makeComputerMove(cell){
 		} else{
 			$("#" + cell).find(".x").css("opacity","1");
 		}
-	}, 500)
-	game.usedCells.push(cell);
-	game.usedCellsO.push(cell);
-	// CHECK IF O WON
-	if(game.usedCellsO.length >= 3){
-		if(checkForWinO()){
-			setTimeout(function(){
-				$("h2").text("You Lose!");
-				$("#messageWrapper").css("display", "block");
+		game.usedCells.push(cell);
+		game.usedCellsO.push(cell);
+	
+	
+		// CHECK IF O WON
+		if(game.usedCellsO.length >= 3){
+			if(checkForWinO()){
 				game.ongoing = false;
 				setTimeout(function(){
-					$(".container").css("opacity", "0.5");
+					$("h2").text("You Lose!");
+					$("#messageWrapper").css("display", "block");
+					
 					setTimeout(function(){
-						$("#messageWrapper").css("opacity", "1");
+						$(".container").css("opacity", "0.5");
+						setTimeout(function(){
+							$("#messageWrapper").css("opacity", "1");
+						}, 500);
 					}, 500);
-				}, 500);
-			}, 510);
+				}, 510);
+			}
 		}
-	}
+	}, 500)
 }
 
 function checkForWinX(){
