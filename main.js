@@ -17,6 +17,9 @@ $(document).on("click", ".playagain", function(){
 	game.openCells = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 	$(".ticTacToeCell img").removeAttr("style");
 	game.ongoing = true;
+	$(".container").css("opacity", "1");
+	$("#messageWrapper").css("display", "none");
+	$("#messageWrapper").css("opacity", "0");
 });
 
 $(document).on("click", ".ticTacToeCell", function(){
@@ -32,7 +35,17 @@ $(document).on("click", ".ticTacToeCell", function(){
 		game.openCells.splice(game.openCells.indexOf($(this).attr('id')), 1);
 		if(game.usedCellsX.length >= 3){
 			if(checkForWinX()){
-				setTimeout(function(){alert("You Win!");game.ongoing = false;}, 10)
+				setTimeout(function(){
+				$("h2").text("You Win!");
+				$("#messageWrapper").css("display", "block");
+				game.ongoing = false;
+				setTimeout(function(){
+					$(".container").css("opacity", "0.5");
+					setTimeout(function(){
+						$("#messageWrapper").css("opacity", "1");
+					}, 500);
+				}, 500);
+			}, 100);
 				return;
 			}
 		}
@@ -82,8 +95,17 @@ function makeComputerMove(cell){
 	// CHECK IF O WON
 	if(game.usedCellsO.length >= 3){
 		if(checkForWinO()){
-			setTimeout(function(){alert("You Lose!");game.ongoing = false;}, 510)
-			return;
+			setTimeout(function(){
+				$("h2").text("You Lose!");
+				$("#messageWrapper").css("display", "block");
+				game.ongoing = false;
+				setTimeout(function(){
+					$(".container").css("opacity", "0.5");
+					setTimeout(function(){
+						$("#messageWrapper").css("opacity", "1");
+					}, 500);
+				}, 500);
+			}, 510);
 		}
 	}
 }
@@ -120,7 +142,17 @@ function findPairs(arr){
 function computersTurnImpossible(){
 	var pickedCell;
 	if(game.usedCells.length === 9){
-		setTimeout(function(){alert("It's a tie!");}, 10);
+		setTimeout(function(){
+				$("h2").text("It's a tie!");
+				$("#messageWrapper").css("display", "block");
+				game.ongoing = false;
+				setTimeout(function(){
+					$(".container").css("opacity", "0.5");
+					setTimeout(function(){
+						$("#messageWrapper").css("opacity", "1");
+					}, 500);
+				}, 500);
+			}, 100);
 		return
 	}
 	//FIRST MOVE
@@ -178,8 +210,8 @@ function computersTurnImpossible(){
 				}
 			}
 		}
-		for(var i=0; i< options.length; i++){
-			for(var j=0; j< game.usedCellsX.length; j++){
+		for(var j=0; j< game.usedCellsX.length; j++){
+			for(var i=0; i< options.length; i++){
 				if(checkAvailability(options[i], game.usedCellsX[j])){
 					options.splice(i,1);
 				}
@@ -192,7 +224,11 @@ function computersTurnImpossible(){
 				}
 			}
 		}
-		pickedCell = options2[pickRandomNumber(options2.length)];
+		if(options2.length >= 1){
+			pickedCell = options2[pickRandomNumber(options2.length)];
+		} else{
+			pickedCell = game.openCells[pickRandomNumber(game.openCells.length)];
+		}
 	}
 	//CHECK IF O CAN WIN
 	if(game.usedCellsO.length >= 2){
@@ -220,7 +256,17 @@ function computersTurnImpossible(){
 function computersTurnHard(){
 	var pickedCell;
 	if(game.usedCells.length === 9){
-		setTimeout(function(){alert("It's a tie!");}, 10);
+		setTimeout(function(){
+				$("h2").text("It's a tie!");
+				$("#messageWrapper").css("display", "block");
+				game.ongoing = false;
+				setTimeout(function(){
+					$(".container").css("opacity", "0.5");
+					setTimeout(function(){
+						$("#messageWrapper").css("opacity", "1");
+					}, 500);
+				}, 500);
+			}, 100);
 		return
 	}
 	//FIRST MOVE
@@ -293,7 +339,17 @@ function computersTurnHard(){
 // ******* RANDOM COMPUTER EASY *************
 function computersTurnEasy(){
 	if(game.usedCells.length === 9){
-		setTimeout(function(){alert("It's a tie!");}, 10);
+		setTimeout(function(){
+				$("h2").text("It's a tie!");
+				$("#messageWrapper").css("display", "block");
+				game.ongoing = false;
+				setTimeout(function(){
+					$(".container").css("opacity", "0.5");
+					setTimeout(function(){
+						$("#messageWrapper").css("opacity", "1");
+					}, 500);
+				}, 500);
+			}, 100);
 		return;
 	}
 	randomCell = game.openCells.splice(pickRandomNumber(game.openCells.length), 1)[0];
