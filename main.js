@@ -7,7 +7,7 @@ var game = {
 	ongoing: true,
 	winOptions: [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"], ["1", "4", "7"], ["2", "5", "8"], ["3", "6", "9"], ["1", "5", "9"], ["3", "5", "7"]],
 	level: [computersTurnImpossible, computersTurnHard ,computersTurnEasy],
-	difficulty: "Impossible"
+	difficulty: "Hard"
 }
 
 $(document).on("click", ".playagain", function(){
@@ -22,7 +22,11 @@ $(document).on("click", ".playagain", function(){
 $(document).on("click", ".ticTacToeCell", function(){
 	//If the clicked cell is not used, add X to cell, put in used Cells array, remove from openCells.
 	if(game.usedCells.indexOf($(this).attr('id')) == -1 && game.ongoing){
-		$(this).find(".x").css("opacity","1");
+		if(game.player === "x"){
+			$(this).find(".x").css("opacity","1");
+		} else{
+			$(this).find(".o").css("opacity","1");
+		}
 		game.usedCells.push($(this).attr('id'));
 		game.usedCellsX.push($(this).attr('id'));
 		game.openCells.splice(game.openCells.indexOf($(this).attr('id')), 1);
@@ -67,7 +71,11 @@ function checkAvailability(arr, val) {
 function makeComputerMove(cell){
 	// game.openCells.splice(game.openCells.indexOf(pickedCell), 1);
 	setTimeout(function(){
-		$("#" + cell).find(".o").css("opacity","1");
+		if(game.player === "x"){
+			$("#" + cell).find(".o").css("opacity","1");
+		} else{
+			$("#" + cell).find(".x").css("opacity","1");
+		}
 	}, 500)
 	game.usedCells.push(cell);
 	game.usedCellsO.push(cell);
@@ -258,7 +266,7 @@ function computersTurnHard(){
 		}
 	}
 	if(!pickedCell){
-		pickedCell = game.openCells.splice(pickRandomNumber(game.openCells.length), 1)[0];
+		pickedCell = game.openCells[pickRandomNumber(game.openCells.length)];
 	}
 	//CHECK IF O CAN WIN
 	if(game.usedCellsO.length >= 2){
@@ -294,9 +302,15 @@ function computersTurnEasy(){
 // TOGGLE PLAYER
 $('.toggle').click(function(e) {
   var toggle = this;
-  
   e.preventDefault();
+  if(game.player === "x"){
+  	game.player = "o"
+  } else{
+  	game.player = "x"
+  }
   
+  $( ".playagain" ).trigger( "click" );
+
   $(toggle).toggleClass('toggle--on')
          .toggleClass('toggle--off')
          .addClass('toggle--moving');
